@@ -2,7 +2,7 @@
 
 All notable changes to IO Maliyet Pro are documented in this file.
 
-## [2.0.0] — 2024-12-01
+## [2.0.0] — 27.05.2026
 
 ### Added
 - Complete UI redesign with dark/light theme system
@@ -30,7 +30,7 @@ All notable changes to IO Maliyet Pro are documented in this file.
 - electron-builder packaging (NSIS installer + portable)
 - DM Sans + DM Mono typography
 
-## [1.0.0] — 2024-10-01
+## [1.0.0] — 27.05.2026
 
 ### Added
 - Initial release
