@@ -191,7 +191,7 @@ io-maliyet-pro/
 
 ## 📄 License
 
-MIT © 2024 [İsmet Organ](https://github.com/sm3th)
+MIT © 2026 [İsmet Organ](https://github.com/sm3th)
 
 See [LICENSE](LICENSE) for full text.
 
