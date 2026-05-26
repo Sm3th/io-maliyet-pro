@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IO Software — Maliyet Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body class="theme-dark">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <svg width="36" height="36" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0ea5e9"/>
+            <stop offset="100%" style="stop-color:#6366f1"/>
+          </linearGradient>
+          <linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#38bdf8"/>
+            <stop offset="100%" style="stop-color:#818cf8"/>
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" rx="22" fill="#0f172a"/>
+        <rect x="27" y="32" width="8" height="56" rx="4" fill="url(#sg)"/>
+        <rect x="19" y="32" width="24" height="8" rx="4" fill="url(#sg)"/>
+        <rect x="19" y="80" width="24" height="8" rx="4" fill="url(#sg)"/>
+        <circle cx="78" cy="60" r="22" fill="none" stroke="url(#sg2)" stroke-width="8"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">IO Software</span>
+      <span class="brand-sub">Maliyet Pro</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active" data-view="dashboard" onclick="app.showView('dashboard')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span data-i18n="dashboard">Gösterge</span>
+    </a>
+    <a href="#" class="nav-item" data-view="projects" onclick="app.showView('projects')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <span data-i18n="projects">Projeler</span>
+      <span class="nav-badge" id="projectsBadge"></span>
+    </a>
+    <a href="#" class="nav-item" data-view="analysis" onclick="app.showView('analysis')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span data-i18n="analysis">Analiz</span>
+    </a>
+    <a href="#" class="nav-item" data-view="settings" onclick="app.showView('settings')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span data-i18n="settings">Ayarlar</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-recent" id="sidebarRecent">
+    <div class="recent-label">Son Projeler</div>
+    <div id="recentList"></div>
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="btn-new-project" onclick="app.yeniProje()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span data-i18n="newProject">Yeni Proje</span>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="pageTitle">Gösterge</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Proje ara... (Ctrl+F)" oninput="app.aramaYap(this.value)"/>
+      </div>
+      <button class="icon-btn" onclick="app.toggleTheme()" id="themeBtn" title="Tema Değiştir">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <div class="save-indicator" id="saveIndicator"></div>
+    </div>
+  </header>
+
+  <!-- VIEWS -->
+  <div class="view-container">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="view active" id="view-dashboard">
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statTotalProjects">0</div>
+            <div class="stat-label" data-i18n="totalProjects">Toplam Proje</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statTotalRevenue">0</div>
+            <div class="stat-label" data-i18n="totalRevenue">Toplam Gelir</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statAvgProfit">—</div>
+            <div class="stat-label" data-i18n="avgProfit">Ort. Kâr Marjı</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statActiveProjects">0</div>
+            <div class="stat-label" data-i18n="activeProjects">Aktif Proje</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3 data-i18n="recentProjects">Son Projeler</h3>
+          </div>
+          <div class="card-body" id="dashRecentProjects">
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <p data-i18n="noProjects">Henüz proje yok</p>
+              <button class="btn-primary btn-sm" onclick="app.yeniProje()"><span data-i18n="newProject">Yeni Proje</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 data-i18n="categoryBreakdown">Kategori Dağılımı</h3>
+          </div>
+          <div class="card-body">
+            <canvas id="categoryChart" width="300" height="220"></canvas>
+            <div class="chart-legend" id="chartLegend"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROJECTS ===== -->
+    <div class="view" id="view-projects">
+      <div class="projects-toolbar">
+        <div class="filter-row">
+          <select class="select-sm" id="sortSelect" onchange="app.sortProjects(this.value)">
+            <option value="date-desc">Tarihe Göre (Yeni)</option>
+            <option value="date-asc">Tarihe Göre (Eski)</option>
+            <option value="name-asc">Ada Göre (A-Z)</option>
+            <option value="name-desc">Ada Göre (Z-A)</option>
+            <option value="cost-desc">Maliyete Göre (Yüksek)</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="app.yeniProje()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span data-i18n="newProject">Yeni Proje</span>
+        </button>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <div class="empty-state full-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <p data-i18n="noProjects">Henüz proje yok</p>
+          <span data-i18n="createFirst">İlk projenizi oluşturun</span>
+          <button class="btn-primary" onclick="app.yeniProje()"><span data-i18n="newProject">Yeni Proje</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROJECT DETAIL ===== -->
+    <div class="view" id="view-detail">
+      <div class="detail-layout">
+        <!-- LEFT: Maliyet tablosu -->
+        <div class="detail-left">
+          <div class="card table-card">
+            <div class="card-header">
+              <div class="table-filters">
+                <select class="select-sm" id="catFilterSelect" onchange="app.filterByCategory(this.value)">
+                  <option value="" data-i18n="allCategories">Tüm Kategoriler</option>
+                </select>
+                <select class="select-sm" id="sortColSelect" onchange="app.sortItems(this.value)">
+                  <option value="default">Sıralama</option>
+                  <option value="name">Ada Göre</option>
+                  <option value="cost-desc">Maliyete Göre ↓</option>
+                  <option value="cost-asc">Maliyete Göre ↑</option>
+                  <option value="diff-desc">Farka Göre ↓</option>
+                </select>
+              </div>
+              <button class="btn-primary btn-sm" onclick="app.kalemEkle()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span data-i18n="addItem">Kalem Ekle</span>
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table class="cost-table" id="costTable">
+                <thead>
+                  <tr>
+                    <th class="col-check"><input type="checkbox" id="selectAll" onchange="app.selectAll(this.checked)"/></th>
+                    <th class="col-num">#</th>
+                    <th class="col-cat" data-i18n="category">Kategori</th>
+                    <th class="col-name" data-i18n="costItem">Kalem</th>
+                    <th class="col-cost" data-i18n="cost">Maliyet</th>
+                    <th class="col-expense" data-i18n="expense">Gider</th>
+                    <th class="col-diff" data-i18n="difference">Fark</th>
+                    <th class="col-note" data-i18n="note">Not</th>
+                    <th class="col-actions"></th>
+                  </tr>
+                </thead>
+                <tbody id="costTableBody"></tbody>
+                <tfoot>
+                  <tr id="tableFooter">
+                    <td colspan="4" class="foot-label">TOPLAM</td>
+                    <td class="foot-val" id="footCost">0,00</td>
+                    <td class="foot-val" id="footExpense">0,00</td>
+                    <td class="foot-val" id="footDiff">0,00</td>
+                    <td colspan="2"></td>
+                  </tr>
+                </tfoot>
+              </table>
+              <div class="table-empty" id="tableEmpty" style="display:none">
+                <div class="empty-state">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <p data-i18n="noCosts">Maliyet kalemi eklenmedi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Proje bilgileri + özet -->
+        <div class="detail-right">
+          <!-- Proje Bilgileri -->
+          <div class="card">
+            <div class="card-header"><h3 data-i18n="projectName">Proje Bilgileri</h3></div>
+            <div class="card-body form-body">
+              <div class="form-group">
+                <label data-i18n="projectName">Proje Adı</label>
+                <input type="text" id="projectNameInput" class="input" placeholder="Proje adı girin..." oninput="app.projeGuncelle()"/>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label data-i18n="startDate">Başlangıç</label>
+                  <input type="date" id="startDateInput" class="input" onchange="app.projeGuncelle()"/>
+                </div>
+                <div class="form-group">
+                  <label data-i18n="endDate">Bitiş</label>
+                  <input type="date" id="endDateInput" class="input" onchange="app.projeGuncelle()"/>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label data-i18n="totalDays">Toplam Gün</label>
+                  <input type="text" id="totalDaysInput" class="input" readonly placeholder="—"/>
+                </div>
+                <div class="form-group">
+                  <label data-i18n="commission">Komisyon %</label>
+                  <select id="commissionSelect" class="input select-input" onchange="app.projeGuncelle()">
+                    <option value="0">%0</option>
+                    <option value="5">%5</option>
+                    <option value="8">%8</option>
+                    <option value="10">%10</option>
+                    <option value="12">%12</option>
+                    <option value="15">%15</option>
+                    <option value="18" selected>%18</option>
+                    <option value="20">%20</option>
+                    <option value="25">%25</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Özet -->
+          <div class="card">
+            <div class="card-header"><h3 data-i18n="total">Özet</h3></div>
+            <div class="card-body">
+              <div class="summary-rows">
+                <div class="summary-row"><span data-i18n="totalCost">Toplam Maliyet</span><strong id="sumCost">0,00</strong></div>
+                <div class="summary-row"><span data-i18n="totalExpense">Toplam Gider</span><strong id="sumExpense">0,00</strong></div>
+                <div class="summary-row summary-row-accent"><span data-i18n="totalDiff">Fark</span><strong id="sumDiff">0,00</strong></div>
+                <div class="summary-row"><span data-i18n="commissionTotal">Komisyon</span><strong id="sumCommission">0,00</strong></div>
+                <div class="summary-row summary-row-total"><span data-i18n="feeTotal">Toplam Ücret</span><strong id="sumTotal">0,00</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KDV -->
+          <div class="card">
+            <div class="card-header"><h3>KDV</h3></div>
+            <div class="card-body">
+              <div class="kdv-row">
+                <select id="kdvSelect" class="input select-input" onchange="app.projeGuncelle()">
+                  <option value="0">KDV Yok (%0)</option>
+                  <option value="1">%1</option>
+                  <option value="8">%8</option>
+                  <option value="10">%10</option>
+                  <option value="18">%18</option>
+                  <option value="20">%20</option>
+                </select>
+                <span id="kdvAmount" class="kdv-amount">0,00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ödemeler -->
+          <div class="card">
+            <div class="card-header">
+              <h3 data-i18n="payments">Ödemeler</h3>
+              <button class="btn-ghost btn-sm" onclick="app.odemeEkle()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span data-i18n="addPayment">Ekle</span>
+              </button>
+            </div>
+            <div class="card-body">
+              <div id="paymentsList"></div>
+              <div class="payments-summary">
+                <div class="summary-row"><span data-i18n="agreed">Anlaşılan</span><strong id="payAgreed">0,00</strong></div>
+                <div class="summary-row"><span data-i18n="paid">Ödenen</span><strong id="payPaid">0,00</strong></div>
+                <div class="summary-row"><span data-i18n="remaining">Kalan</span><strong id="payRemaining">0,00</strong></div>
+                <div class="summary-row summary-row-accent"><span data-i18n="extra">Artan</span><strong id="payExtra">0,00</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Eylemler -->
+          <div class="detail-actions">
+            <button class="btn-outline" onclick="app.exportCsv()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              CSV
+            </button>
+            <button class="btn-outline" onclick="window.print()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Yazdır
+            </button>
+            <button class="btn-primary" onclick="app.kaydet()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              <span data-i18n="save">Kaydet</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ANALYSIS ===== -->
+    <div class="view" id="view-analysis">
+      <div class="analysis-grid">
+        <div class="card card-wide">
+          <div class="card-header"><h3 data-i18n="comparison">Proje Karşılaştırma</h3></div>
+          <div class="card-body">
+            <canvas id="barChart" height="180"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3 data-i18n="topItems">En Yüksek 5 Kalem</h3></div>
+          <div class="card-body" id="topItemsList"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Proje Tablosu</h3></div>
+          <div class="card-body">
+            <table class="analysis-table" id="analysisTable">
+              <thead><tr>
+                <th>Proje</th>
+                <th data-i18n="totalCost">Maliyet</th>
+                <th data-i18n="totalExpense">Gider</th>
+                <th data-i18n="profit">Kâr</th>
+                <th data-i18n="profitMargin">Marj</th>
+              </tr></thead>
+              <tbody id="analysisTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS ===== -->
+    <div class="view" id="view-settings">
+      <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3>Görünüm</h3></div>
+          <div class="card-body form-body">
+            <div class="form-group">
+              <label data-i18n="language">Dil</label>
+              <select class="input" id="langSelect" onchange="app.setLanguage(this.value)">
+                <option value="tr">Türkçe</option>
+                <option value="en">English</option>
+                <option value="pl">Polski</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="currency">Para Birimi</label>
+              <select class="input" id="currencySelect" onchange="app.setCurrency(this.value)">
+                <option value="TL">₺ Türk Lirası</option>
+                <option value="USD">$ US Dollar</option>
+                <option value="EUR">€ Euro</option>
+                <option value="PLN">zł Złoty</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="theme">Tema</label>
+              <select class="input" id="themeSelect" onchange="app.setTheme(this.value)">
+                <option value="dark">Koyu</option>
+                <option value="light">Açık</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3 data-i18n="companyInfo">Şirket Bilgileri</h3></div>
+          <div class="card-body form-body">
+            <div class="form-group">
+              <label data-i18n="companyName">Şirket Adı</label>
+              <input type="text" id="companyNameInput" class="input" placeholder="IO Software" oninput="app.saveSettings()"/>
+            </div>
+            <div class="form-group">
+              <label>Adres</label>
+              <textarea id="companyAddressInput" class="input textarea" rows="3" placeholder="Şirket adresi..." oninput="app.saveSettings()"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Tel / E-posta</label>
+              <input type="text" id="companyContactInput" class="input" placeholder="Tel veya e-posta..." oninput="app.saveSettings()"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3 data-i18n="backup">Veri Yönetimi</h3></div>
+          <div class="card-body">
+            <div class="backup-buttons">
+              <button class="btn-outline" onclick="app.yedekal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span data-i18n="exportJson">JSON Yedek Al</span>
+              </button>
+              <button class="btn-outline" onclick="app.yedekYukle()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span data-i18n="importJson">JSON Yedek Yükle</span>
+              </button>
+            </div>
+            <div class="data-info" id="dataInfo">
+              <div class="info-row"><span>Toplam Proje</span><strong id="infoProjects">0</strong></div>
+              <div class="info-row"><span>Toplam Kalem</span><strong id="infoItems">0</strong></div>
+              <div class="info-row"><span>Son Kayıt</span><strong id="infoLastSave">—</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>IO Software</h3></div>
+          <div class="card-body about-card">
+            <div class="about-logo">
+              <svg width="64" height="64" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="asg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#0ea5e9"/>
+                    <stop offset="100%" style="stop-color:#6366f1"/>
+                  </linearGradient>
+                  <linearGradient id="asg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#38bdf8"/>
+                    <stop offset="100%" style="stop-color:#818cf8"/>
+                  </linearGradient>
+                </defs>
+                <rect width="120" height="120" rx="22" fill="#0f172a"/>
+                <rect x="27" y="32" width="8" height="56" rx="4" fill="url(#asg)"/>
+                <rect x="19" y="32" width="24" height="8" rx="4" fill="url(#asg)"/>
+                <rect x="19" y="80" width="24" height="8" rx="4" fill="url(#asg)"/>
+                <circle cx="78" cy="60" r="22" fill="none" stroke="url(#asg2)" stroke-width="8"/>
+              </svg>
+            </div>
+            <div class="about-info">
+              <h4>Maliyet Pro</h4>
+              <p>Sürüm 2.0.0</p>
+              <p class="about-copy">© 2024 İsmet Organ · IO Software — MIT License</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /view-container -->
+</main>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modalOverlay" onclick="app.closeModal()"></div>
+
+<!-- Kalem Modal -->
+<div class="modal" id="itemModal">
+  <div class="modal-header">
+    <h3 id="itemModalTitle">Kalem Ekle</h3>
+    <button class="modal-close" onclick="app.closeModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label data-i18n="category">Kategori</label>
+      <select id="itemCat" class="input select-input">
+        <option>Malzeme</option>
+        <option>İşçilik</option>
+        <option>Nakliye</option>
+        <option>Hırdavat</option>
+        <option>Hizmet</option>
+        <option>Diğer</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label data-i18n="costItem">Kalem Adı</label>
+      <input type="text" id="itemName" class="input" placeholder="Kalem adı..."/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label data-i18n="cost">Maliyet</label>
+        <input type="number" id="itemCost" class="input" placeholder="0,00" min="0" step="0.01" oninput="app.updateModalDiff()"/>
+      </div>
+      <div class="form-group">
+        <label data-i18n="expense">Gider</label>
+        <input type="number" id="itemExpense" class="input" placeholder="0,00" min="0" step="0.01" oninput="app.updateModalDiff()"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label data-i18n="difference">Fark (Otomatik)</label>
+      <input type="text" id="itemDiff" class="input" readonly/>
+    </div>
+    <div class="form-group">
+      <label data-i18n="note">Not</label>
+      <input type="text" id="itemNote" class="input" placeholder="Opsiyonel not..."/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-ghost" onclick="app.closeModal()" data-i18n="cancel">İptal</button>
+    <button class="btn-primary" onclick="app.kalemKaydet()" data-i18n="save">Kaydet</button>
+  </div>
+</div>
+
+<!-- Ödeme Modal -->
+<div class="modal" id="paymentModal">
+  <div class="modal-header">
+    <h3 data-i18n="addPayment">Ödeme Ekle</h3>
+    <button class="modal-close" onclick="app.closeModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label data-i18n="paymentDate">Tarih</label>
+      <input type="date" id="payDate" class="input"/>
+    </div>
+    <div class="form-group">
+      <label data-i18n="paymentAmount">Tutar</label>
+      <input type="number" id="payAmount" class="input" placeholder="0,00" min="0" step="0.01"/>
+    </div>
+    <div class="form-group">
+      <label data-i18n="paymentNote">Açıklama</label>
+      <input type="text" id="payNote" class="input" placeholder="Opsiyonel..."/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-ghost" onclick="app.closeModal()" data-i18n="cancel">İptal</button>
+    <button class="btn-primary" onclick="app.odemeKaydet()" data-i18n="save">Kaydet</button>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal modal-sm" id="confirmModal">
+  <div class="modal-header">
+    <h3>Onay</h3>
+    <button class="modal-close" onclick="app.closeModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p id="confirmMessage" data-i18n="deleteConfirm">Bu öğeyi silmek istediğinizden emin misiniz?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-ghost" onclick="app.closeModal()" data-i18n="no">Hayır</button>
+    <button class="btn-danger" id="confirmBtn" data-i18n="yes">Evet</button>
+  </div>
+</div>
+
+<!-- PRINT TEMPLATE -->
+<div id="printTemplate" style="display:none">
+  <div class="print-header">
+    <div class="print-logo-area">
+      <strong id="printCompany">IO Software</strong>
+      <small id="printContact"></small>
+    </div>
+    <div class="print-title-area">
+      <h2 id="printProjectName"></h2>
+      <small id="printDates"></small>
+    </div>
+  </div>
+  <table class="print-table" id="printTable"></table>
+  <div class="print-summary" id="printSummary"></div>
+</div>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
